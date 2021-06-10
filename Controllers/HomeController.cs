@@ -10,6 +10,11 @@ namespace DotNetCoreSqlDb.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly MyDatabaseContext _context;
+        public HomeController(MyDatabaseContext context){
+            this._context = context;
+        }
+
         public IActionResult Index()
         {
             return View();

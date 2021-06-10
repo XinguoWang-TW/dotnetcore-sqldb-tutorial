@@ -1,0 +1,1 @@
+dotnet ef DbContext Scaffold "Server=tcp:wxgsqlserver.database.windows.net,1433;Initial Catalog=mySampleDatabase;Persist Security Info=False;User ID=azureuser;Password=PWD#azusr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Models -f 

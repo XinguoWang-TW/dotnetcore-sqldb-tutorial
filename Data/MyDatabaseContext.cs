@@ -14,5 +14,6 @@ namespace DotNetCoreSqlDb.Models
         }
 
         public DbSet<DotNetCoreSqlDb.Models.Todo> Todo { get; set; }
+        // public DbSet<Customer> Customers { get; set; }
     }
 }
