@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using DotNetCoreSqlDb.Models;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
 
 namespace DotNetCoreSqlDb
 {
@@ -54,11 +57,26 @@ namespace DotNetCoreSqlDb
 
             app.UseAuthorization();
 
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+                {
+                    Delay= TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                }
+            };
+            var client = new SecretClient(new Uri(Configuration.GetValue<string>("KeyVault:URI")), new DefaultAzureCredential(),options);
+
+            KeyVaultSecret secret = client.GetSecret("AppID");
+            string secretValue = secret.Value;
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Todos}/{action=Index}/{id?}");
+                    pattern: "{controller=Todos}/{action=Index}/{id?}?sv=secretValue");
             });
         }
     }
